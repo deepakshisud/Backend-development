@@ -15,6 +15,11 @@ app.get('/r/:subreddit', (req, res) => {
     console.log(req.params);
 })
 
+app.get('/search', (req,res) => {
+    const {q} = req.query;
+    res.send(`Hello ${q}`);
+})
+
 app.get('/cats', (req,res) => {
     res.send('MEOW!!!')
 });
