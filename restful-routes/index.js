@@ -9,15 +9,16 @@ const express = require('express');
 const { request } = require('http');
 const app = express();
 const path = require('path');
-
+const methodOverride = require('method-override')
 const { v4: uuid} = require('uuid');
-uuidv4();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
+app.use(methodOverride('_method'))
+
 
 app.get('/tacos', (req,res) =>  {
     res.send("GET / tacos response");
@@ -66,6 +67,21 @@ app.post('/comments', (req, res) => {
     comments.push({username, comment, id : uuid()});
     res.redirect('/comments')
 })
+
+app.patch('/comments/:id' , (req,res) => {
+    const {id} = req.params;
+    const newCommentText = req.body.comment;
+    const foundComment = comments.find(c => c.id === id);
+    foundComment.comment = newCommentText;
+    res.redirect('/comments');
+})
+
+app.get('/comments/:id/edit', (req,res) => {
+    const {id} = req.params;
+    const comment = comments.find(c => c.id === id);
+    res.render('comments/edit', {comment});
+})
+
 app.post('/tacos', (req,res) => {
     const {meat, quantity} = req.body;
     res.send(`Ok. Here are your ${meat} tacos with quantity ${quantity}`); 
