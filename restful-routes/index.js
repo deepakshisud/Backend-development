@@ -24,7 +24,7 @@ app.get('/tacos', (req,res) =>  {
     res.send("GET / tacos response");
 })
 
-const comments = [
+let comments = [
     {
         id: uuid(),
         username: 'Deepakshi',
@@ -80,6 +80,12 @@ app.get('/comments/:id/edit', (req,res) => {
     const {id} = req.params;
     const comment = comments.find(c => c.id === id);
     res.render('comments/edit', {comment});
+})
+
+app.delete('/comments/:id', (req, res) => {
+    const {id} = req.params;
+    comments = comments.filter(c => c.id !== id);
+    res.redirect('/comments');
 })
 
 app.post('/tacos', (req,res) => {
