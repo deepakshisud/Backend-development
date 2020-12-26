@@ -10,6 +10,9 @@ const { request } = require('http');
 const app = express();
 const path = require('path');
 
+const { v4: uuid} = require('uuid');
+uuidv4();
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
@@ -22,22 +25,22 @@ app.get('/tacos', (req,res) =>  {
 
 const comments = [
     {
-        id: 1,
+        id: uuid(),
         username: 'Deepakshi',
         comment: 'Lol thats so funny'
     },
     {
-        id: 2,
+        id: uuid(),
         username: 'Aadi',
         comment: 'I love u'
     },
     {
-        id: 3,
+        id: uuid(),
         username: 'Maanas',
         comment: 'Lets play something'
     },
     {
-        id: 4,
+        id: uuid(),
         username: 'Muma',
         comment: 'Where is Spinny?'
     }
@@ -50,7 +53,7 @@ app.get('/comments', (req,res) => {
 
 app.get('/comments/:id', (req, res) => {
     const {id} = req.params;
-    const comment = comments.find(c => c.id === parseInt(id));
+    const comment = comments.find(c => c.id === id);
     res.render('comments/show', {comment})
 })
 
@@ -60,7 +63,7 @@ app.get('/comments/new', (req,res) => {
 
 app.post('/comments', (req, res) => {
     const {username, comment} = req.body;
-    comments.push({username, comment});
+    comments.push({username, comment, id : uuid()});
     res.redirect('/comments')
 })
 app.post('/tacos', (req,res) => {
