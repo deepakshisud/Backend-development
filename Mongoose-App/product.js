@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema( {
     },
     price: {
         type: Number,
-        min: 0
+        min: [0,'Price must be positive']
     },
     onSale: {
         type: Boolean,
@@ -24,10 +24,29 @@ const productSchema = new mongoose.Schema( {
     },
     categories: {
         type: [String]
+    },
+    size: {
+        type: String,
+        enum: ['S', 'M', 'L']
     }
 });
 
+
+productSchema.methods.greet = function() {
+    console.log("hello")
+};
+
 const Product = mongoose.model('Product', productSchema);
+
+
+const findProduct = async() => {
+    const foundProduct = await Product.findOne({name: 'Mountain Bike'});
+    foundProduct.greet();
+}
+
+findProduct();
+
+
 
 // const bike = new Product( {
 //     name: 'Mountain Bike',
@@ -36,12 +55,12 @@ const Product = mongoose.model('Product', productSchema);
 // });
 
 // bike.save()
-Product.findOneAndUpdate({name:'Mountain Bike'}, {price: -100}, {new: true, runValidators: true})
-    .then( data => {
-        console.log("It worked");
-        console.log(data);
-    })
-    .catch( err => {
-        console.log("Error encountered")
-        console.log(err)
-    })
+// Product.findOneAndUpdate({name:'Mountain Bike'}, {price: -100}, {new: true, runValidators: true})
+//     .then( data => {
+//         console.log("It worked");
+//         console.log(data);
+//     })
+//     .catch( err => {
+//         console.log("Error encountered")
+//         console.log(err)
+//     })
