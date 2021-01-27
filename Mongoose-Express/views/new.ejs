@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Book</title>
+</head>
+<body>
+    <h1>Add a new book</h1>
+    <form action="/books" method="POST">
+        <label for="name">Book name</label>
+        <input type="text" name="name" placeholder="Book name" id="name">
+        <label for="price">Book price</label>
+        <input type="number" name="price" placeholder="Price" id="price">
+        <label for="category">Select Category</label>
+        <select name="category" id="category">
+            <option value="romance">romance</option>
+            <option value="horror">horror</option>
+            <option value="thriller">thriller</option>
+            <option value="comedy">comedy</option>
+        </select>
+        <button>Add book</button>
+    </form>
+    
+</body>
+</html>

@@ -17,17 +17,35 @@ mongoose.connect('mongodb://localhost:27017/booksApp', {useNewUrlParser: true, u
 
 app.set('views',path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({extended: true}))
+
 
 app.get('/books', async (req, res) => {
     const books = await Book.find({})
     res.render('index.ejs', {books});
 })
 
+app.get('/books/new', (req, res) => {
+    res.render('new');
+})
+
+app.get('/books/:id/edit', async (req, res) => {
+    const {id} = req.params;
+    const foundBook = await Book.findById(id);
+    res.render('edit', {foundBook});
+})
+
+app.post('/books', async (req, res) => {
+    const newBook = new Book(req.body);
+    await newBook.save();
+    console.log(newBook);
+    res.redirect(`/books/${newBook._id}`)
+})
+
 app.get('/books/:id', async (req, res) => {
     const {id} = req.params;
     const foundBook = await Book.findById(id);
-    console.log(foundBook);
-    res.send('Details page');
+    res.render('show', {foundBook});
 })
 
 app.listen(3000, () => {
