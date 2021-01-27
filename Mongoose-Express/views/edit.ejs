@@ -14,10 +14,10 @@
         <input type="number" name="price" placeholder="Price" id="price" value="<%= foundBook.price %>">
         <label for="category">Select Category</label>
         <select name="category" id="category">
-            <option value="romance">romance</option>
-            <option value="horror">horror</option>
-            <option value="thriller">thriller</option>
-            <option value="comedy">comedy</option>
+            <option value="romance" <%= foundBook.category === 'romance' ? 'selected': ''%> >romance</option>
+            <option value="horror" <%= foundBook.category === 'horror' ? 'selected': ''%>>horror</option>
+            <option value="thriller" <%= foundBook.category === 'thriller' ? 'selected': ''%>>thriller</option>
+            <option value="comedy" <%= foundBook.category === 'comedy' ? 'selected': ''%>>comedy</option>
         </select>
         <button>Add book</button>
     </form>

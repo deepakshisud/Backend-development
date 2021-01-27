@@ -39,7 +39,6 @@ app.get('/books/:id/edit', async (req, res) => {
 app.post('/books', async (req, res) => {
     const newBook = new Book(req.body);
     await newBook.save();
-    console.log(newBook);
     res.redirect(`/books/${newBook._id}`)
 })
 
@@ -53,6 +52,12 @@ app.put('/books/:id', async (req, res) => {
     const {id} = req.params;
     const book = await Book.findByIdAndUpdate(id, req.body, {runValidators: true, new: true});
     res.redirect(`/books/${book._id}`)
+})
+
+app.delete('/books/:id', async (req, res) => {
+    const {id} = req.params;
+    const deletedBook = await Book.findByIdAndDelete(id);
+    res.redirect('/books');
 })
 
 app.listen(3000, () => {
