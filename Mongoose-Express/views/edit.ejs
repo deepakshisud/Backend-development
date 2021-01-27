@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Edit a book</h1>
-    <form action="/books/<%= foundBook._id %> " method="POST">
+    <form action="/books/<%= foundBook._id %>?_method=PUT" method="POST">
         <label for="name">Book name</label>
         <input type="text" name="name" placeholder="Book name" id="name" value="<%= foundBook.name %> ">
         <label for="price">Book price</label>
@@ -21,6 +21,8 @@
         </select>
         <button>Add book</button>
     </form>
+
+    <a href="/books/<%= foundBook._id %> ">Cancel</a>
     
 </body>
 </html>

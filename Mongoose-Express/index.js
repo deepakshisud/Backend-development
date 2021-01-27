@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
 const Book = require('./models/books');
 
@@ -18,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/booksApp', {useNewUrlParser: true, u
 app.set('views',path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}))
-
+app.use(methodOverride('_method'));
 
 app.get('/books', async (req, res) => {
     const books = await Book.find({})
@@ -46,6 +47,12 @@ app.get('/books/:id', async (req, res) => {
     const {id} = req.params;
     const foundBook = await Book.findById(id);
     res.render('show', {foundBook});
+})
+
+app.put('/books/:id', async (req, res) => {
+    const {id} = req.params;
+    const book = await Book.findByIdAndUpdate(id, req.body, {runValidators: true, new: true});
+    res.redirect(`/books/${book._id}`)
 })
 
 app.listen(3000, () => {
