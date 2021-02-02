@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const AppError = require('./AppError');
 const Book = require('./models/books');
+const { isRegExp } = require('util');
 
 mongoose.connect('mongodb://localhost:27017/booksApp', {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
@@ -27,8 +28,12 @@ app.get('/books', async (req, res) => {
 })
 
 app.get('/books/new', (req, res) => {
-    throw new AppError('NOT ALLOWED', 401);
-    res.render('new');
+    try{
+        res.render('new');
+    } catch {
+        throw new AppError('NOT ALLOWED', 401);
+    }
+
 })
 
 app.get('/books/:id/edit', async (req, res) => {
@@ -71,6 +76,17 @@ app.delete('/books/:id', async (req, res) => {
     const {id} = req.params;
     const deletedBook = await Book.findByIdAndDelete(id);
     res.redirect('/books');
+})
+
+const handleValidationError = err => {
+    console.log(err);
+    return new AppError(`Validation failed...${err.message}`,400);
+}
+
+app.use((err, req, res, next) => {
+    console.log(err.name);
+    if(err.name === 'ValidationError') err = handleValidationError(err);
+    next(err);
 })
 
 app.use((err,req,res,next) => {
