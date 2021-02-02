@@ -40,36 +40,32 @@ app.get('/books/:id/edit', async (req, res) => {
     res.render('edit', {foundBook});
 })
 
-app.post('/books', async (req, res, next) => {
-    try {
+app.post('/books', wrapAsync(async (req, res, next) => {
         const newBook = new Book(req.body);
         await newBook.save();
         res.redirect(`/books/${newBook._id}`)
-    } catch(e) {
-        next(e);
+}))
+
+function wrapAsync(fn) {
+    return function(req,res,next) {
+        fn(req,res,next).catch(e => next(e))
     }
+}
 
-})
+app.get('/books/:id', wrapAsync( async (req, res, next) => {
+        const {id} = req.params;
+        const foundBook = await Book.findById(id);
+        if(!foundBook) {
+            throw new AppError('Book not found', 404);
+        }
+        res.render('show', {foundBook});
+}))
 
-app.get('/books/:id', async (req, res, next) => {
-    const {id} = req.params;
-    const foundBook = await Book.findById(id);
-    if(!foundBook) {
-        return next(new AppError('Book not found', 404));
-    }
-    res.render('show', {foundBook});
-})
-
-app.put('/books/:id', async (req, res, next) => {
-    try {
+app.put('/books/:id', wrapAsync(async (req, res, next) => {
         const {id} = req.params;
         const book = await Book.findByIdAndUpdate(id, req.body, {runValidators: true, new: true});
         res.redirect(`/books/${book._id}`)
-    } catch(e) {
-        next(e);
-    }
-
-})
+}))
 
 app.delete('/books/:id', async (req, res) => {
     const {id} = req.params;
