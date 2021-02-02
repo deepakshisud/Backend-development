@@ -6,8 +6,8 @@ const AppError = require('./AppError');
 // app.use(morgan('tiny'));
 
 app.use((req, res, next) => {
-    req.method = 'GET';
-    console.log(req.method, req.path);
+    //req.method = 'GET';
+    //console.log(req.method, req.path);
     next();
 })
 
@@ -43,14 +43,26 @@ app.get('/secret', verify_password, (req, res) => {
     res.send("Sup?");
 })
 
+app.get('/admin', (req, res) => {
+    throw new AppError('You are not an admin', 403);
+})
+
+
 
 app.use((req,res) => {
     res.status(404).send('404 Error');
 })
 
+// app.use((err,req,res,next) => {
+//     console.log('***************');
+//     next(err);
+
+// })
+
 app.use((err,req,res,next) => {
-    console.log('***************');
-    next(err);
+    const { status = 500 } = err;
+    const { message = 'Something went wrong'} = err;
+    res.status(status).send(message);
 
 })
 
