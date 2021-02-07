@@ -24,14 +24,21 @@ const tweetSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Tweet = mongoose.model('Tweet', tweetSchema);
 
-const makeTweets = async() => {
-    // const u = new User({name:'Aadi', age:'21'});
-    const u = await User.findOne({name: 'Aadi'})
-    const tweet2 = new Tweet({text:'fdkjgsjdhf', likes:6});
-    tweet2.user = u;
-    tweet2.save();
+// const makeTweets = async() => {
+//     // const u = new User({name:'Aadi', age:'21'});
+//     const u = await User.findOne({name: 'Aadi'})
+//     const tweet2 = new Tweet({text:'fdkjgsjdhf', likes:6});
+//     tweet2.user = u;
+//     tweet2.save();
 
+// }
+
+// makeTweets();
+
+
+const findTweet = async() => {
+    const t = await Tweet.find({}).populate('user')
+    console.log(t);
 }
 
-makeTweets();
-
+findTweet()
