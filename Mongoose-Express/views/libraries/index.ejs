@@ -9,8 +9,7 @@
     <h1>All Libraries</h1>
     <ul>
         <% for(let library of libraries) { %>
-            <li><%= library.name %> </a> </li>
-            <li><%= library.city %> </a> </li>
+            <li><a href="/libraries/<%= library._id %> "><%= library.names %></a> </li>
         <% } %>  
     </ul>
 </body>

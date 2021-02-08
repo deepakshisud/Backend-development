@@ -18,5 +18,5 @@ const libSchema = new Schema({
 })
 
 const Library = mongoose.model('Library', libSchema);
-
+Library.deleteMany();
 module.exports = Library;

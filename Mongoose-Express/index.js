@@ -28,6 +28,11 @@ app.get('/libraries', async(req,res)=> {
     res.render('libraries/index', {libraries});
 })
 
+app.get('/libraries/:id', async(req, res) => {
+    const library = await Library.findById(req.params.id);
+    res.render('libraries/show', {library});
+})
+
 
 app.get('/libraries/new', (req, res) => {
     res.render('libraries/new');
