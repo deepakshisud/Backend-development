@@ -29,7 +29,7 @@ app.get('/libraries', async(req,res)=> {
 })
 
 app.get('/libraries/:id', async(req, res) => {
-    const library = await Library.findById(req.params.id);
+    const library = await Library.findById(req.params.id).populate('books');
     res.render('libraries/show', {library});
 })
 
@@ -44,6 +44,22 @@ app.post('/libraries', async(req,res) => {
     res.redirect('/libraries')
 })
 
+app.get('/libraries/:id/books/new', (req, res) => {
+    const {id} = req.params;
+    res.render('new',{id});
+})
+
+app.post('/libraries/:id/books', async(req,res) => {
+    const {id} = req.params;
+    const library = await Library.findById(id);
+    const {name, price, category} = req.body;
+    const book = new Book({name,price,category});
+    library.books.push(book);
+    book.library = library;
+    await library.save();
+    await book.save();
+    res.redirect(`/libraries/${id}`);
+})
 
 
 

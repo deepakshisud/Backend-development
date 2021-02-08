@@ -11,6 +11,13 @@
         <li>City: <%= library.citys %> </li>
         <li>Email: <%= library.emails %> </li>
     </ul>
+    <h2>Books</h2>
+    <ul>
+        <% for(let book of library.books) { %> 
+            <li><%= book.name %> </li>
+        <% } %> 
+    </ul>
+    <a href="/libraries/<%= library._id %>/books/new">Add Book</a>
     <a href="/libraries">All library</a>
 </body>
 </html>
