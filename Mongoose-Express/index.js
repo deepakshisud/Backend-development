@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const AppError = require('./AppError');
 const Book = require('./models/books');
+const Library = require('./models/libraries');
 const { isRegExp } = require('util');
 
 mongoose.connect('mongodb://localhost:27017/booksApp', {useNewUrlParser: true, useUnifiedTopology: true})
@@ -21,6 +22,25 @@ app.set('views',path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'));
+
+app.get('/libraries', async(req,res)=> {
+    const libraries = await Library.find();
+    res.render('libraries/index', {libraries});
+})
+
+
+app.get('/libraries/new', (req, res) => {
+    res.render('libraries/new');
+})
+
+app.post('/libraries', async(req,res) => {
+    const library = new Library(req.body);
+    await library.save();
+    res.redirect('/libraries')
+})
+
+
+
 
 app.get('/books', async (req, res) => {
     const books = await Book.find({})

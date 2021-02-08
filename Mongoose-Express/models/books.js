@@ -14,6 +14,10 @@ const bookSchema = new mongoose.Schema( {
         type: String,
         lowercase: true,
         enum: ['romance', 'horror', 'thriller', 'comedy']
+    },
+    library: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Library'
     }
 })
 
