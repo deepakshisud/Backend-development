@@ -28,15 +28,23 @@ app.get('/libraries', async(req,res)=> {
     res.render('libraries/index', {libraries});
 })
 
+
+app.get('/libraries/new', (req, res) => {
+    res.render('libraries/new');
+})
+
 app.get('/libraries/:id', async(req, res) => {
     const library = await Library.findById(req.params.id).populate('books');
     res.render('libraries/show', {library});
 })
 
+app.delete('/libraries/:id', async(req,res) => {
+    const library = await Library.findByIdAndDelete(req.params.id);
 
-app.get('/libraries/new', (req, res) => {
-    res.render('libraries/new');
+    res.redirect('/libraries');
 })
+
+
 
 app.post('/libraries', async(req,res) => {
     const library = new Library(req.body);

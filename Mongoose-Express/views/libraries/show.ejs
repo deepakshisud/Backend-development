@@ -19,5 +19,8 @@
     </ul>
     <a href="/libraries/<%= library._id %>/books/new">Add Book</a>
     <a href="/libraries">All library</a>
+    <form action="/libraries/<%= library._id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
 </body>
 </html>
