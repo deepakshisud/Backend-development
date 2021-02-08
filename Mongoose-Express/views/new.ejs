@@ -6,7 +6,7 @@
     <title>New Book</title>
 </head>
 <body>
-    <h1>Add a new book</h1>
+    <h1><%= library.names %> - Add a new book</h1>
     <form action="/libraries/<%=id%>/books" method="POST">
         <label for="name">Book name</label>
         <input type="text" name="name" placeholder="Book name" id="name">

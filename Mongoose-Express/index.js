@@ -44,9 +44,10 @@ app.post('/libraries', async(req,res) => {
     res.redirect('/libraries')
 })
 
-app.get('/libraries/:id/books/new', (req, res) => {
+app.get('/libraries/:id/books/new', async(req, res) => {
     const {id} = req.params;
-    res.render('new',{id});
+    const library = await Library.findById(id);
+    res.render('new',{id,library});
 })
 
 app.post('/libraries/:id/books', async(req,res) => {
