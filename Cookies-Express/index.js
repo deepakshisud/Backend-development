@@ -1,8 +1,9 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const { signedCookie } = require('cookie-parser');
 const app = express();
 
-app.use(cookieParser());
+app.use(cookieParser('thisismysecret'));
 
 app.get('/greet', (req, res) => {
     const {name} = req.cookies;
@@ -12,6 +13,15 @@ app.get('/greet', (req, res) => {
 app.get('/setname', (req, res) => {
     res.cookie('name', 'Aadi');
     res.send("Sent your cookie");
+})
+
+app.get('/getsignedcookie', (req, res) => {
+    res.cookie('fruit', 'mango', {signed: true})
+    res.send('Signed cookie sent');
+})
+
+app.get('/verify', (req, res) => {
+    res.send(req.signedCookies);
 })
 
 
