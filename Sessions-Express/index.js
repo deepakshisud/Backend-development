@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 
+const sessionOptions = {secret: 'thisisnotagoodsecret', resave: false, saveUninitialized: false}
 
-app.use(session({secret: 'thisisnotagoodsecret'}));
+app.use(session(sessionOptions));
 
 app.get('/pages', (req, res) => {
     if(req.session.count) {
