@@ -30,6 +30,11 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'));
 
+app.use((req, res, next) => {
+    res.locals.messages = req.flash('success');
+    next();
+})
+
 app.get('/libraries', async(req,res)=> {
     const libraries = await Library.find();
     res.render('libraries/index', {libraries});
@@ -81,7 +86,7 @@ app.post('/libraries/:id/books', async(req,res) => {
 
 app.get('/books', async (req, res) => {
     const books = await Book.find({})
-    res.render('index.ejs', {books, messages: req.flash('success')});
+    res.render('index.ejs', {books});
 })
 
 app.get('/books/new', (req, res) => {
