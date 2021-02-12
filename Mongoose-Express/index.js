@@ -7,6 +7,13 @@ const AppError = require('./AppError');
 const Book = require('./models/books');
 const Library = require('./models/libraries');
 const { isRegExp } = require('util');
+const session = require('express-session');
+const flash = require('connect-flash');
+
+const sessionOptions = {secret: 'thisisnotagoodsecret', resave: false, saveUninitialized: false}
+app.use(session(sessionOptions));
+
+app.use(flash());
 
 mongoose.connect('mongodb://localhost:27017/booksApp', {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
@@ -74,7 +81,7 @@ app.post('/libraries/:id/books', async(req,res) => {
 
 app.get('/books', async (req, res) => {
     const books = await Book.find({})
-    res.render('index.ejs', {books});
+    res.render('index.ejs', {books, messages: req.flash('success')});
 })
 
 app.get('/books/new', (req, res) => {
@@ -98,6 +105,7 @@ app.get('/books/:id/edit', async (req, res) => {
 app.post('/books', wrapAsync(async (req, res, next) => {
         const newBook = new Book(req.body);
         await newBook.save();
+        req.flash('success', 'Added a book');
         res.redirect(`/books/${newBook._id}`)
 }))
 
