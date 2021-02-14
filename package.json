@@ -1,0 +1,26 @@
+{
+  "name": "Backend-development",
+  "version": "1.0.0",
+  "description": "Includes node js, express and mongoDB",
+  "main": "args.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepakshisud/Backend-development.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deepakshisud/Backend-development/issues"
+  },
+  "homepage": "https://github.com/deepakshisud/Backend-development#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.16"
+  }
+}
