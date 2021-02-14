@@ -2,6 +2,7 @@ const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 const app = express();
 const User = require('./models/user');
 
@@ -18,6 +19,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(express.urlencoded({extended: true}));
+app.use(session({secret:'secret'}))
 
 app.get('/', (req, res) => {
     res.send("Home page");
@@ -37,10 +39,11 @@ app.post('/login', async(req, res) => {
     const user = await User.findOne({username})
     const validPassword = await bcrypt.compare(password,user.password);
     if(validPassword) {
-        res.send("Welcome")
+        req.session.user_id = user._id;
+        res.redirect('/secret')
     }
     else {
-        res.send("try again");
+        res.redirect('/login');
     }
 })
 
@@ -52,11 +55,15 @@ app.post('/register', async(req, res) => {
         password: hash
     })
     await user.save();
+    req.session.user_id = user._id;
     res.redirect('/');
 })
 
 app.get('/secret', (req, res) => {
-    res.send("Someting");
+    if(!req.session.user_id) {
+        res.redirect('/login');
+    }
+    res.send('Secret');
 })
 
 app.listen(3000, () => {
