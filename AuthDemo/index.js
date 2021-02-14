@@ -34,6 +34,12 @@ app.get('/login', (req, res) => {
     res.render('login');
 })
 
+app.post('/logout', (req, res) => {
+    // req.session.user_id = null;
+    req.session.destroy();
+    res.redirect('/login');
+})
+
 app.post('/login', async(req, res) => {
     const {username, password} = req.body;
     const user = await User.findOne({username})
@@ -61,9 +67,9 @@ app.post('/register', async(req, res) => {
 
 app.get('/secret', (req, res) => {
     if(!req.session.user_id) {
-        res.redirect('/login');
+        return res.redirect('/login');
     }
-    res.send('Secret');
+    res.render('secret');
 })
 
 app.listen(3000, () => {
